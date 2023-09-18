@@ -1,9 +1,6 @@
-import 'dart:async';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:full_screen_image/full_screen_image.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +24,7 @@ class _MainAppState extends State<MainApp> {
   bool speedOFS = false;
   Duration animationDelay = const Duration(milliseconds: 250);
   bool extendedConnected = false;
-  // bool testFS = false;
+  bool showSideBar = false;
   List<double> widgetHeight = [0.7, 0.3, 0.7, 0.3, 0.3, 0.7, 0.3, 0.7];
   List<double> widgetWidth = [
     0.325,
@@ -66,7 +63,10 @@ class _MainAppState extends State<MainApp> {
                     int sensi = 500;
                     double velocity = details.primaryVelocity!;
                     if (velocity > sensi) {
-                      setState(() => speedOFS = true);
+                      setState(() {
+                        speedOFS = true;
+                        showSideBar = false;
+                      });
                     } else if (velocity < -sensi) {
                       setState(() => speedOFS = false);
                     }
@@ -105,11 +105,13 @@ class _MainAppState extends State<MainApp> {
                                       widgetWidth[0] = 0.65;
                                       widgetHeight[1] = 0;
                                       extendedConnected = !extendedConnected;
+                                      showSideBar = true;
                                     } else if (widgetFS[0] == false) {
                                       widgetHeight[0] = 0.7;
                                       widgetWidth[0] = 0.325;
                                       widgetHeight[1] = 0.3;
                                       extendedConnected = !extendedConnected;
+                                      showSideBar = false;
                                     }
                                   },
                                 );
@@ -142,11 +144,13 @@ class _MainAppState extends State<MainApp> {
                                       widgetWidth[1] = 0.65;
                                       widgetHeight[0] = 0;
                                       extendedConnected = !extendedConnected;
+                                      showSideBar = true;
                                     } else if (widgetFS[1] == false) {
                                       widgetHeight[1] = 0.7;
                                       widgetWidth[1] = 0.325;
                                       widgetHeight[0] = 0.3;
                                       extendedConnected = !extendedConnected;
+                                      showSideBar = false;
                                     }
                                   },
                                 );
@@ -171,8 +175,7 @@ class _MainAppState extends State<MainApp> {
                           ],
                         ),
                       ),
-      
-      // ==================== Column 1 Container 2 ====================
+                      // ==================== Column 1 Container 2 ====================
                       Container(
                         height: height,
                         color: Colors.blueGrey,
@@ -188,11 +191,13 @@ class _MainAppState extends State<MainApp> {
                                       widgetWidth[2] = 0.65;
                                       widgetHeight[3] = 0;
                                       extendedConnected = !extendedConnected;
+                                      showSideBar = true;
                                     } else if (widgetFS[2] == false) {
                                       widgetHeight[2] = 0.7;
                                       widgetWidth[2] = 0.325;
                                       widgetHeight[3] = 0.3;
                                       extendedConnected = !extendedConnected;
+                                      showSideBar = false;
                                     }
                                   },
                                 );
@@ -225,11 +230,13 @@ class _MainAppState extends State<MainApp> {
                                       widgetWidth[3] = 0.65;
                                       widgetHeight[2] = 0;
                                       extendedConnected = !extendedConnected;
+                                      showSideBar = true;
                                     } else if (widgetFS[3] == false) {
                                       widgetHeight[3] = 0.7;
                                       widgetWidth[3] = 0.325;
                                       widgetHeight[2] = 0.3;
                                       extendedConnected = !extendedConnected;
+                                      showSideBar = false;
                                     }
                                   },
                                 );
@@ -264,7 +271,7 @@ class _MainAppState extends State<MainApp> {
                             : AlwaysScrollableScrollPhysics()),
                   ),
                 ),
-      // ==================== Column 2 ====================
+                // ==================== Column 2 ====================
                 AnimatedContainer(
                   duration: animationDelay,
                   height: height,
@@ -286,11 +293,13 @@ class _MainAppState extends State<MainApp> {
                                       widgetWidth[4] = 0.65;
                                       widgetHeight[5] = 0;
                                       extendedConnected = !extendedConnected;
+                                      showSideBar = true;
                                     } else if (widgetFS[4] == false) {
                                       widgetHeight[4] = 0.7;
                                       widgetWidth[4] = 0.325;
                                       widgetHeight[5] = 0.3;
                                       extendedConnected = !extendedConnected;
+                                      showSideBar = false;
                                     }
                                   },
                                 );
@@ -323,11 +332,13 @@ class _MainAppState extends State<MainApp> {
                                       widgetWidth[5] = 0.65;
                                       widgetHeight[4] = 0;
                                       extendedConnected = !extendedConnected;
+                                      showSideBar = true;
                                     } else if (widgetFS[5] == false) {
                                       widgetHeight[5] = 0.7;
                                       widgetWidth[5] = 0.325;
                                       widgetHeight[4] = 0.3;
                                       extendedConnected = !extendedConnected;
+                                      showSideBar = false;
                                     }
                                   },
                                 );
@@ -352,8 +363,8 @@ class _MainAppState extends State<MainApp> {
                           ],
                         ),
                       ),
-      
-      // ==================== Column 2 Container 2 ====================
+
+                      // ==================== Column 2 Container 2 ====================
                       Container(
                         height: height,
                         color: Colors.blueGrey,
@@ -369,11 +380,13 @@ class _MainAppState extends State<MainApp> {
                                       widgetWidth[6] = 0.65;
                                       widgetHeight[7] = 0;
                                       extendedConnected = !extendedConnected;
+                                      showSideBar = true;
                                     } else if (widgetFS[6] == false) {
                                       widgetHeight[6] = 0.7;
                                       widgetWidth[6] = 0.325;
                                       widgetHeight[7] = 0.3;
                                       extendedConnected = !extendedConnected;
+                                      showSideBar = false;
                                     }
                                   },
                                 );
@@ -406,11 +419,13 @@ class _MainAppState extends State<MainApp> {
                                       widgetWidth[7] = 0.65;
                                       widgetHeight[6] = 0;
                                       extendedConnected = !extendedConnected;
+                                      showSideBar = true;
                                     } else if (widgetFS[7] == false) {
                                       widgetHeight[7] = 0.7;
                                       widgetWidth[7] = 0.325;
                                       widgetHeight[6] = 0.3;
                                       extendedConnected = !extendedConnected;
+                                      showSideBar = false;
                                     }
                                   },
                                 );
@@ -445,6 +460,25 @@ class _MainAppState extends State<MainApp> {
                             : AlwaysScrollableScrollPhysics()),
                   ),
                 ),
+                AnimatedContainer(
+                  duration: animationDelay,
+                  height: height,
+                  width: width * (showSideBar ? 0.07 : 0),
+                  child: Container(
+                    color: Colors.black,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Image.asset('images/weatherIcon.png'),
+                        Image.asset('images/batteryInfoIcon.png'),
+                        Image.asset('images/documentIcon.png'),
+                        Image.asset('images/mapIcon.png'),
+                        Image.asset('images/musicIcon.png'),
+                        Image.asset('images/riderProfileIcon.png'),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -455,7 +489,7 @@ class _MainAppState extends State<MainApp> {
 
   double setColumnOneWidth() {
     if (widgetFS[0] || widgetFS[1] || widgetFS[2] || widgetFS[3]) {
-      return 0.65;
+      return 0.58;
     } else if (speedOFS ||
         widgetFS[4] ||
         widgetFS[5] ||
@@ -468,7 +502,7 @@ class _MainAppState extends State<MainApp> {
 
   double setColumnTwoWidth() {
     if (widgetFS[4] || widgetFS[5] || widgetFS[6] || widgetFS[7]) {
-      return 0.65;
+      return 0.58;
     } else if (speedOFS ||
         widgetFS[0] ||
         widgetFS[1] ||
@@ -478,25 +512,4 @@ class _MainAppState extends State<MainApp> {
     } else
       return 0.325;
   }
-  // double setWidth() {
-  //   if (speedOFS) {
-  //     return 0;
-  //   } else if (widgetFS[0] || widgetFS[1]) {
-  //     return 0.65;
-  //   } else {
-  //     return 0.325;
-  //   }
-  // }
-
-  // // height: widgetFS[1]? (widgetFS[1] ? 0: height) : (height * (widgetOneLg ? 0.7 : 0.3)),
-  // double setHeight() {
-  //   int index = getWidgetIndex();
-  //   if (index == 0) {
-  //     if (widgetFS[index] == true) return 1;
-  //   }
-  //   else if (widgetOneLg == true) return 0.7;
-  //   else if(widgetOneLg == false) return 0.3;
-  //   else if(index == 0 && widgetFS[1] == true) return 0;
-  //   return 0;
-  // }
 }
