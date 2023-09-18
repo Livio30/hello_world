@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   carousel_slider: ^4.2.1
+  full_screen_image: ^2.0.0
 
 dev_dependencies:
   flutter_test:

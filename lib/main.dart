@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:full_screen_image/full_screen_image.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,42 +25,32 @@ class _MainAppState extends State<MainApp> {
   bool widgetThreeLg = false;
   bool widgetFourLg = false;
   bool speedOFS = false;
-  Duration animationDelay = const Duration(milliseconds: 300);
+  Duration animationDelay = const Duration(milliseconds: 250);
   bool extendedConnected = false;
   // bool testFS = false;
-  List<double> widgetHeight= [0.7,0.3,0.7,0.3,0.7,0.3,0.7,0.3];
-  List<double> widgetWidth= [0.325,0.325,0.325,0.325,0.325,0.325,0.325,0.325];
+  List<double> widgetHeight = [0.7, 0.3, 0.7, 0.3, 0.3, 0.7, 0.3, 0.7];
+  List<double> widgetWidth = [
+    0.325,
+    0.325,
+    0.325,
+    0.325,
+    0.325,
+    0.325,
+    0.325,
+    0.325
+  ];
 
-  // List<bool> widgetFS = [
-  //   false,
-  //   false,
-  //   false,
-  //   false,
-  //   false,
-  //   false,
-  //   false,
-  //   false,
-  //   false,
-  // ];
-  // void setWidth(int widgetId){
-
-  // }
-
-  // int getWidgetIndex() {
-  //   int index = 0;
-  //   int count = 0;
-  //   for (count = 0; count < widgetFS.length; count++) {
-  //     if (widgetFS[count]) {
-  //       index = count;
-  //       print("index : $index");
-  //       return index;
-  //     }
-  //   }
-  //   print("List $widgetFS");
-  //   // if (count < widgetFS.length) return true;
-  //   return -1;
-  // }
-
+  List<bool> widgetFS = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ];
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height - 36;
@@ -71,11 +62,9 @@ class _MainAppState extends State<MainApp> {
             child: Row(
               children: [
                 GestureDetector(
-                  // onTap: () => print("Return: ${getWidgetIndex()}"),
                   onHorizontalDragEnd: (details) {
                     int sensi = 500;
                     double velocity = details.primaryVelocity!;
-                    print(velocity);
                     if (velocity > sensi) {
                       setState(() => speedOFS = true);
                     } else if (velocity < -sensi) {
@@ -98,42 +87,45 @@ class _MainAppState extends State<MainApp> {
                 AnimatedContainer(
                   duration: animationDelay,
                   height: height,
-                  // width: speedOFS
-                  //     ? (width * (speedOFS ? 0.0 : 0.325))
-                  //     : (widgetFS[0] ? width * 0.65 : width * 0.325),
-                  width:  widgetWidth[0] * width,
+                  width: width * setColumnOneWidth(),
                   child: CarouselSlider(
                     items: [
                       Container(
                         height: height,
                         color: Colors.pink,
-                        // width: widgetFS[0]?500:double.maxFinite,
-                        // margin: EdgeInsets.all(10),
                         child: Column(
                           children: [
                             GestureDetector(
                               onDoubleTap: () {
+                                setState(
+                                  () {
+                                    widgetFS[0] = !widgetFS[0];
+                                    if (widgetFS[0] == true) {
+                                      widgetHeight[0] = 1.0;
+                                      widgetWidth[0] = 0.65;
+                                      widgetHeight[1] = 0;
+                                      extendedConnected = !extendedConnected;
+                                    } else if (widgetFS[0] == false) {
+                                      widgetHeight[0] = 0.7;
+                                      widgetWidth[0] = 0.325;
+                                      widgetHeight[1] = 0.3;
+                                      extendedConnected = !extendedConnected;
+                                    }
+                                  },
+                                );
+                              },
+                              onTap: () {
+                                widgetOneLg = !widgetOneLg;
                                 setState(() {
-                                  // widgetFS.fillRange(0, widgetFS.length, false);
-                                  widgetHeight[0] = 1;
-                                  widgetWidth[0] = 0.65;
-                                  widgetHeight[1] =0;
-                                  extendedConnected = !extendedConnected;
+                                  widgetHeight[0] = widgetOneLg ? 0.7 : 0.3;
+                                  widgetHeight[1] = widgetOneLg ? 0.3 : 0.7;
                                 });
                               },
-                              onTap: () =>
-                                  setState(() => widgetOneLg = !widgetOneLg),
                               child: AnimatedContainer(
                                 duration: animationDelay,
-                                // width: double.maxFinite,
-                                // height: height * (widgetOneLg ? 0.7 : 0.3),
                                 height: height * widgetHeight[0],
-                                // height: widgetFS[1]
-                                //     ? (widgetFS[1] ? 0 : height)
-                                //     : (height * (widgetOneLg ? 0.7 : 0.3)),
                                 color: Colors.yellow,
                                 child: Container(
-                                  // width: double.maxFinite,
                                   height: double.maxFinite,
                                   color: Colors.black,
                                   margin: const EdgeInsets.all(5),
@@ -142,30 +134,35 @@ class _MainAppState extends State<MainApp> {
                             ),
                             GestureDetector(
                               onDoubleTap: () {
-                                setState(() {
-                                  // widgetFS.fillRange(0, widgetFS.length, false);
-                                  // extendedConnected = !extendedConnected;
-                                  // widgetFS[1] = !widgetFS[1];
-                                });
+                                setState(
+                                  () {
+                                    widgetFS[1] = !widgetFS[1];
+                                    if (widgetFS[1] == true) {
+                                      widgetHeight[1] = 1.0;
+                                      widgetWidth[1] = 0.65;
+                                      widgetHeight[0] = 0;
+                                      extendedConnected = !extendedConnected;
+                                    } else if (widgetFS[1] == false) {
+                                      widgetHeight[1] = 0.7;
+                                      widgetWidth[1] = 0.325;
+                                      widgetHeight[0] = 0.3;
+                                      extendedConnected = !extendedConnected;
+                                    }
+                                  },
+                                );
                               },
                               onTap: () {
-                                setState(() => widgetOneLg = !widgetOneLg);
-                                print(widgetOneLg);
+                                widgetOneLg = !widgetOneLg;
+                                setState(() {
+                                  widgetHeight[1] = widgetOneLg ? 0.3 : 0.7;
+                                  widgetHeight[0] = widgetOneLg ? 0.7 : 0.3;
+                                });
                               },
                               child: AnimatedContainer(
                                 duration: animationDelay,
-                                // height:testFS?(testFS? 0.0:height):(),
-                                // height: height * (widgetOneLg ? 0.3 : 0.7),
-                                // height: widgetFS[0]
-                                //     ? (widgetFS[0] ? 0 : height * 0.3)
-                                //     : (widgetOneLg ? height * 0.3 : height * 0.7),
-                                // height: widgetOneLg
-                                //     ? (widgetOneLg ? height * 0.3 : height * 0.7)
-                                //     : (testFS ? 0.0 : height * 0.7),
+                                height: height * widgetHeight[1],
                                 color: Colors.cyan,
                                 child: Container(
-                                  width: double.maxFinite,
-                                  // height:testFS? double.maxFinite:0,
                                   color: Colors.black,
                                   margin: const EdgeInsets.all(5),
                                 ),
@@ -174,22 +171,44 @@ class _MainAppState extends State<MainApp> {
                           ],
                         ),
                       ),
+      
+      // ==================== Column 1 Container 2 ====================
                       Container(
-                        // width: width * 0.3,
                         height: height,
-                        color: Colors.deepPurple,
+                        color: Colors.blueGrey,
                         child: Column(
                           children: [
                             GestureDetector(
-                              onTap: () =>
-                                  setState(() => widgetTwoLg = !widgetTwoLg),
+                              onDoubleTap: () {
+                                setState(
+                                  () {
+                                    widgetFS[2] = !widgetFS[2];
+                                    if (widgetFS[2] == true) {
+                                      widgetHeight[2] = 1.0;
+                                      widgetWidth[2] = 0.65;
+                                      widgetHeight[3] = 0;
+                                      extendedConnected = !extendedConnected;
+                                    } else if (widgetFS[2] == false) {
+                                      widgetHeight[2] = 0.7;
+                                      widgetWidth[2] = 0.325;
+                                      widgetHeight[3] = 0.3;
+                                      extendedConnected = !extendedConnected;
+                                    }
+                                  },
+                                );
+                              },
+                              onTap: () {
+                                widgetTwoLg = !widgetTwoLg;
+                                setState(() {
+                                  widgetHeight[2] = widgetTwoLg ? 0.7 : 0.3;
+                                  widgetHeight[3] = widgetTwoLg ? 0.3 : 0.7;
+                                });
+                              },
                               child: AnimatedContainer(
                                 duration: animationDelay,
-                                width: double.maxFinite,
-                                height: height * (widgetTwoLg ? 0.7 : 0.3),
-                                color: Colors.indigo,
+                                height: height * widgetHeight[2],
+                                color: Colors.green,
                                 child: Container(
-                                  width: double.maxFinite,
                                   height: double.maxFinite,
                                   color: Colors.black,
                                   margin: const EdgeInsets.all(5),
@@ -197,16 +216,36 @@ class _MainAppState extends State<MainApp> {
                               ),
                             ),
                             GestureDetector(
-                              onTap: () =>
-                                  setState(() => widgetTwoLg = !widgetTwoLg),
+                              onDoubleTap: () {
+                                setState(
+                                  () {
+                                    widgetFS[3] = !widgetFS[3];
+                                    if (widgetFS[3] == true) {
+                                      widgetHeight[3] = 1.0;
+                                      widgetWidth[3] = 0.65;
+                                      widgetHeight[2] = 0;
+                                      extendedConnected = !extendedConnected;
+                                    } else if (widgetFS[3] == false) {
+                                      widgetHeight[3] = 0.7;
+                                      widgetWidth[3] = 0.325;
+                                      widgetHeight[2] = 0.3;
+                                      extendedConnected = !extendedConnected;
+                                    }
+                                  },
+                                );
+                              },
+                              onTap: () {
+                                widgetTwoLg = !widgetTwoLg;
+                                setState(() {
+                                  widgetHeight[3] = widgetTwoLg ? 0.3 : 0.7;
+                                  widgetHeight[2] = widgetTwoLg ? 0.7 : 0.3;
+                                });
+                              },
                               child: AnimatedContainer(
                                 duration: animationDelay,
-                                width: double.maxFinite,
-                                height: height * (widgetTwoLg ? 0.3 : 0.7),
-                                color: Colors.orange,
+                                height: height * widgetHeight[3],
+                                color: Colors.indigo,
                                 child: Container(
-                                  width: double.maxFinite,
-                                  height: double.maxFinite,
                                   color: Colors.black,
                                   margin: const EdgeInsets.all(5),
                                 ),
@@ -225,32 +264,49 @@ class _MainAppState extends State<MainApp> {
                             : AlwaysScrollableScrollPhysics()),
                   ),
                 ),
+      // ==================== Column 2 ====================
                 AnimatedContainer(
                   duration: animationDelay,
-                  width: 0,
-
-                  // width: speedOFS
-                  //     ? (width * (speedOFS ? 0.0 : 0.325))
-                  //     : (widgetFS[0] ||widgetFS[1] ? width * 0.0 : width * 0.325),
                   height: height,
+                  width: width * setColumnTwoWidth(),
                   child: CarouselSlider(
                     items: [
                       Container(
-                        // width: width * 0.3,
                         height: height,
-                        color: Colors.blue,
+                        color: Colors.pink,
                         child: Column(
                           children: [
                             GestureDetector(
-                              onTap: () =>
-                                  setState(() => widgetThreeLg = !widgetThreeLg),
+                              onDoubleTap: () {
+                                setState(
+                                  () {
+                                    widgetFS[4] = !widgetFS[4];
+                                    if (widgetFS[4] == true) {
+                                      widgetHeight[4] = 1.0;
+                                      widgetWidth[4] = 0.65;
+                                      widgetHeight[5] = 0;
+                                      extendedConnected = !extendedConnected;
+                                    } else if (widgetFS[4] == false) {
+                                      widgetHeight[4] = 0.7;
+                                      widgetWidth[4] = 0.325;
+                                      widgetHeight[5] = 0.3;
+                                      extendedConnected = !extendedConnected;
+                                    }
+                                  },
+                                );
+                              },
+                              onTap: () {
+                                widgetThreeLg = !widgetThreeLg;
+                                setState(() {
+                                  widgetHeight[4] = widgetThreeLg ? 0.7 : 0.3;
+                                  widgetHeight[5] = widgetThreeLg ? 0.3 : 0.7;
+                                });
+                              },
                               child: AnimatedContainer(
                                 duration: animationDelay,
-                                // width: double.maxFinite,
-                                height: height * (widgetThreeLg ? 0.7 : 0.3),
-                                color: Colors.amber,
+                                height: height * widgetHeight[4],
+                                color: Colors.orange,
                                 child: Container(
-                                  // width: width*0.325,
                                   height: double.maxFinite,
                                   color: Colors.black,
                                   margin: const EdgeInsets.all(5),
@@ -258,16 +314,36 @@ class _MainAppState extends State<MainApp> {
                               ),
                             ),
                             GestureDetector(
-                              onTap: () =>
-                                  setState(() => widgetThreeLg = !widgetThreeLg),
+                              onDoubleTap: () {
+                                setState(
+                                  () {
+                                    widgetFS[5] = !widgetFS[5];
+                                    if (widgetFS[5] == true) {
+                                      widgetHeight[5] = 1.0;
+                                      widgetWidth[5] = 0.65;
+                                      widgetHeight[4] = 0;
+                                      extendedConnected = !extendedConnected;
+                                    } else if (widgetFS[5] == false) {
+                                      widgetHeight[5] = 0.7;
+                                      widgetWidth[5] = 0.325;
+                                      widgetHeight[4] = 0.3;
+                                      extendedConnected = !extendedConnected;
+                                    }
+                                  },
+                                );
+                              },
+                              onTap: () {
+                                widgetThreeLg = !widgetThreeLg;
+                                setState(() {
+                                  widgetHeight[5] = widgetThreeLg ? 0.3 : 0.7;
+                                  widgetHeight[4] = widgetThreeLg ? 0.7 : 0.3;
+                                });
+                              },
                               child: AnimatedContainer(
                                 duration: animationDelay,
-                                width: double.maxFinite,
-                                height: height * (widgetThreeLg ? 0.3 : 0.7),
-                                color: Colors.lightGreen,
+                                height: height * widgetHeight[5],
+                                color: Colors.brown,
                                 child: Container(
-                                  width: double.maxFinite,
-                                  height: double.maxFinite,
                                   color: Colors.black,
                                   margin: const EdgeInsets.all(5),
                                 ),
@@ -276,22 +352,44 @@ class _MainAppState extends State<MainApp> {
                           ],
                         ),
                       ),
+      
+      // ==================== Column 2 Container 2 ====================
                       Container(
-                        // width: width * 0.3,
                         height: height,
-                        color: Colors.deepPurple,
+                        color: Colors.blueGrey,
                         child: Column(
                           children: [
                             GestureDetector(
-                              onTap: () =>
-                                  setState(() => widgetFourLg = !widgetFourLg),
+                              onDoubleTap: () {
+                                setState(
+                                  () {
+                                    widgetFS[6] = !widgetFS[6];
+                                    if (widgetFS[6] == true) {
+                                      widgetHeight[6] = 1.0;
+                                      widgetWidth[6] = 0.65;
+                                      widgetHeight[7] = 0;
+                                      extendedConnected = !extendedConnected;
+                                    } else if (widgetFS[6] == false) {
+                                      widgetHeight[6] = 0.7;
+                                      widgetWidth[6] = 0.325;
+                                      widgetHeight[7] = 0.3;
+                                      extendedConnected = !extendedConnected;
+                                    }
+                                  },
+                                );
+                              },
+                              onTap: () {
+                                widgetFourLg = !widgetFourLg;
+                                setState(() {
+                                  widgetHeight[6] = widgetFourLg ? 0.7 : 0.3;
+                                  widgetHeight[7] = widgetFourLg ? 0.3 : 0.7;
+                                });
+                              },
                               child: AnimatedContainer(
                                 duration: animationDelay,
-                                width: double.maxFinite,
-                                height: height * (widgetFourLg ? 0.7 : 0.3),
-                                color: Colors.blueGrey,
+                                height: height * widgetHeight[6],
+                                color: Colors.lightBlue,
                                 child: Container(
-                                  width: double.maxFinite,
                                   height: double.maxFinite,
                                   color: Colors.black,
                                   margin: const EdgeInsets.all(5),
@@ -299,16 +397,36 @@ class _MainAppState extends State<MainApp> {
                               ),
                             ),
                             GestureDetector(
-                              onTap: () =>
-                                  setState(() => widgetFourLg = !widgetFourLg),
+                              onDoubleTap: () {
+                                setState(
+                                  () {
+                                    widgetFS[7] = !widgetFS[7];
+                                    if (widgetFS[7] == true) {
+                                      widgetHeight[7] = 1.0;
+                                      widgetWidth[7] = 0.65;
+                                      widgetHeight[6] = 0;
+                                      extendedConnected = !extendedConnected;
+                                    } else if (widgetFS[7] == false) {
+                                      widgetHeight[7] = 0.7;
+                                      widgetWidth[7] = 0.325;
+                                      widgetHeight[6] = 0.3;
+                                      extendedConnected = !extendedConnected;
+                                    }
+                                  },
+                                );
+                              },
+                              onTap: () {
+                                widgetFourLg = !widgetFourLg;
+                                setState(() {
+                                  widgetHeight[7] = widgetFourLg ? 0.3 : 0.7;
+                                  widgetHeight[6] = widgetFourLg ? 0.7 : 0.3;
+                                });
+                              },
                               child: AnimatedContainer(
                                 duration: animationDelay,
-                                width: double.maxFinite,
-                                height: height * (widgetFourLg ? 0.3 : 0.7),
-                                color: Colors.lime,
+                                height: height * widgetHeight[7],
+                                color: Colors.deepPurple,
                                 child: Container(
-                                  width: double.maxFinite,
-                                  height: double.maxFinite,
                                   color: Colors.black,
                                   margin: const EdgeInsets.all(5),
                                 ),
@@ -335,6 +453,31 @@ class _MainAppState extends State<MainApp> {
     );
   }
 
+  double setColumnOneWidth() {
+    if (widgetFS[0] || widgetFS[1] || widgetFS[2] || widgetFS[3]) {
+      return 0.65;
+    } else if (speedOFS ||
+        widgetFS[4] ||
+        widgetFS[5] ||
+        widgetFS[6] ||
+        widgetFS[7]) {
+      return 0;
+    } else
+      return 0.325;
+  }
+
+  double setColumnTwoWidth() {
+    if (widgetFS[4] || widgetFS[5] || widgetFS[6] || widgetFS[7]) {
+      return 0.65;
+    } else if (speedOFS ||
+        widgetFS[0] ||
+        widgetFS[1] ||
+        widgetFS[2] ||
+        widgetFS[3]) {
+      return 0;
+    } else
+      return 0.325;
+  }
   // double setWidth() {
   //   if (speedOFS) {
   //     return 0;
